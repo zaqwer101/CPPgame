@@ -1,19 +1,21 @@
 #include<iostream>
+#include "Hero.h"
 #include "Creature.h"
 using namespace std;
 
 int main() 
 {
-    Creature tester = Creature("Tester", 1, 1, 1, 10);
-    Creature dummy = Creature("Dummy", 350, 0, 0, 0);
+    Hero zaqwer101 = Hero("Platon");
+    Hero dummy = Hero("Dummy");
     
-    while (dummy.isAlive())
+    zaqwer101.__debug_printStats();
+    
+    while(dummy.isAlive())
     {
-        tester.attack(dummy);
+        cout << zaqwer101.getStats().name << " атаковал " << dummy.getStats().name << ", нанеся " << zaqwer101.attack(dummy) << " единиц урона" << endl;
     }
     
-    cout << "Уровень:" << tester.getStats().level << endl 
-            << "EXP: " << tester.getStats().exp << "/" << tester.getStats().exp_to_level << endl;
+    zaqwer101.__debug_printStats();
     
     return 0;
 }

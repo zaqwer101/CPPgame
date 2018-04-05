@@ -31,7 +31,8 @@ void Creature::takeDamage_phys(int damage) {
     }
 }
 
-void Creature::attack(Creature &target) {
+int Creature::attack(Creature &target) {
+    int tmp = target.stats.hp;
     if(target.isAlive())
         target.takeDamage_phys(this->stats.damage);
     
@@ -39,6 +40,7 @@ void Creature::attack(Creature &target) {
     {
         this->takeExp(target.stats.maxhp);
     }
+    return tmp - target.stats.hp;
 }
 
 void Creature::takeExp(int exp) {
@@ -51,7 +53,7 @@ void Creature::takeExp(int exp) {
         if (this->stats.exp >= this->stats.exp_to_level)
         {
             delta -= this->stats.exp_to_level;
-            lvlUp(); // exp_to_level увеличилась, exp = 0
+            lvlUp(); 
         }
         else
             break;
@@ -72,7 +74,27 @@ void Creature::lvlUp() {
     this->stats.exp = 0;
     this->stats.exp_to_level *= 2;
     this->stats.level ++;
+    this->lvlUp_upgradeStats(); 
 }
 
+void Creature::changeDamage(int value)
+{
+    this->stats.damage += value;
+}
 
+void Creature::changeMaxHP(int value)
+{
+    this->stats.maxhp += value;
+    this->takeDamage_phys(value * -1); // 
+}
 
+void Creature::__debug_printStats() {
+    cout <<
+            "----------------" << endl << 
+            "Name: " << this->stats.name << endl <<
+            "HP: " << this->stats.hp << "/" << this->stats.maxhp << endl <<
+            "Damage: " << this->stats.damage << endl <<
+            "Level: " << this->stats.level << endl <<
+            "EXP: " << this->stats.exp << "/" << this->stats.exp_to_level << endl << 
+            "----------------" << endl;
+}
