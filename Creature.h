@@ -7,7 +7,7 @@ using namespace std;
 
 struct _stats 
 {
-        string name;
+        string name, type;
         int hp,maxhp;
         int mana, maxmana;
         int armor, maxarmor;
@@ -18,10 +18,11 @@ struct _stats
 
 class Creature {
 public:
+    
     Creature(string name, int hp, int mana, int armor, int damage);
     struct _stats getStats();
     
-    void attack(Creature &target);
+    int attack(Creature &target);
     void takeDamage_phys(int damage);
     
     void die();
@@ -29,11 +30,23 @@ public:
     
     void takeExp(int exp);
     void lvlUp();
-
+    
+    void changeDamage(int value);
+    
+    /**
+    * Изменить максимальный уровень здоровья существа.
+    * @param value
+    */
+    void changeMaxHP(int value);
+    
+    /// Debug methods
+    void __debug_printStats();
+    
     
 private:
     _stats stats;
     bool alive;
+    virtual void lvlUp_upgradeStats() = 0;
 };
 
 #endif /* CREATURE_H */
