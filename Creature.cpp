@@ -1,4 +1,4 @@
-#include "../headers/Creature.h"
+#include "Creature.h"
 
 Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is_NPC, string type) {
     this->stats.armor = armor;

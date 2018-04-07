@@ -1,7 +1,7 @@
 #ifndef HERO_H
 #define HERO_H
 
-#include "../headers/Creature.h"
+#include "Creature.h"
 
 
 class Hero : public Creature {

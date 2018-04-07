@@ -1,7 +1,7 @@
 #ifndef CREATURE_NPC_H
 #define CREATURE_NPC_H
 #include<iostream>
-#include "../headers/Creature.h"
+#include "Creature.h"
 using namespace std;
 
 /**

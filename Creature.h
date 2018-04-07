@@ -2,6 +2,7 @@
 #define CREATURE_H
 
 #include<iostream>
+
 using namespace std;
 
 struct _stats 
@@ -68,6 +69,8 @@ private:
     bool alive;
     virtual void lvlUp_upgradeStats() = 0;
     bool _is_NPC;
+    
+
 };
 
 #endif /* CREATURE_H */

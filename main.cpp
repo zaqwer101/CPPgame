@@ -1,6 +1,6 @@
 #include<iostream>
-#include "../headers/Hero.h"
-#include "../headers/Creature.h"
+#include "Hero.h"
+#include "Creature.h"
 using namespace std;
 
 int main() 
