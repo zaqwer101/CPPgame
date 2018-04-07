@@ -6,7 +6,12 @@ using namespace std;
 
 struct _stats 
 {
-        string name, type;
+        string name;
+
+        /**
+         * Тип существа (e.g. "Ogre"). 
+        */
+        string type;
         int hp,maxhp;
         int mana, maxmana;
         int armor, maxarmor;
@@ -17,7 +22,7 @@ struct _stats
 
 class Creature {
 public:
-    Creature(string name, int hp, int mana, int armor, int damage, bool _is_NPC);
+    Creature(string name, int hp, int mana, int armor, int damage, bool _is_NPC, string type);
     struct _stats getStats();
     
     int attack(Creature &target);
@@ -49,7 +54,7 @@ public:
     */
     void changeMaxHP(int value);
     
-    /// Debug methods
+    /// Debug method
     void __debug_printStats();
     
     /**

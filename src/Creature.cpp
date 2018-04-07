@@ -1,6 +1,6 @@
 #include "../headers/Creature.h"
 
-Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is_NPC) {
+Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is_NPC, string type) {
     this->stats.armor = armor;
     this->stats.maxarmor = armor;
     this->stats.name = name;
@@ -14,10 +14,11 @@ Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is
     this->stats.level = 1;
     this->stats.exp = 0;
     this->stats.exp_to_level = 100;
-    
+
     this->alive = true;
     
     this->_is_NPC = is_NPC;
+    this->stats.type = type; 
 }
 
 struct _stats Creature::getStats(){
@@ -93,13 +94,13 @@ void Creature::changeMaxHP(int value)
 
 void Creature::__debug_printStats() {
     cout <<
-            "----------------" << endl << 
-            "Name: " << this->stats.name << endl <<
-            "HP: " << this->stats.hp << "/" << this->stats.maxhp << endl <<
-            "Damage: " << this->stats.damage << endl <<
-            "Level: " << this->stats.level << endl <<
-            "EXP: " << this->stats.exp << "/" << this->stats.exp_to_level << endl << 
-            "----------------" << endl;
+        "----------------" << endl << 
+        "Name: " << this->stats.name << endl <<
+        "HP: " << this->stats.hp << "/" << this->stats.maxhp << endl <<
+        "Damage: " << this->stats.damage << endl <<
+        "Level: " << this->stats.level << endl <<
+        "EXP: " << this->stats.exp << "/" << this->stats.exp_to_level << endl << 
+        "----------------" << endl;
 }
 
 bool Creature::is_NPC()

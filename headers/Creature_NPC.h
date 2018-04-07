@@ -9,13 +9,18 @@ using namespace std;
  */
 class Creature_NPC : public Creature {
 public:
-    Creature_NPC(string name, int hp, int mana, int armor, int damage, bool aggressive);
+    Creature_NPC(string name, int hp, int mana, int armor, int damage, bool aggressive, string type);
     
     /**
      * Будет ли NPC нападать на всех героев (Hero), которых встречает
      * @return 
      */
     bool isAggressive(); 
+
+    /**
+     * Функция, которой ИИ "действует"
+     */
+    virtual void AI() = 0;
 
 private:
     bool _aggressive;

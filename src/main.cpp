@@ -14,9 +14,8 @@ int main()
     {
         cout << zaqwer101.getStats().name << " атаковал " << dummy.getStats().name << ", нанеся " << zaqwer101.attack(dummy) << " единиц урона" << endl;
     }
-    
+
+    zaqwer101.takeExp(300);
     zaqwer101.__debug_printStats();
-    
-    return 0;
 }
 

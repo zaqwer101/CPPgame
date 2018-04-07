@@ -8,3 +8,5 @@ cd build
 cmake ..
 make
 mv cppgame ..
+cd ..
+rm build -rf
