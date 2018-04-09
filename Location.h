@@ -1,9 +1,10 @@
 #ifndef LOCATION_H
-
 #define LOCATION_H
-#include "Creature.h"
+
 #include<iostream>
 #include<vector>
+
+class Creature;
 
 using namespace std;
 

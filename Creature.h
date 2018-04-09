@@ -2,6 +2,7 @@
 #define CREATURE_H
 
 #include<iostream>
+#include "Location.h"
 
 using namespace std;
 
@@ -64,14 +65,22 @@ public:
      */
     bool is_NPC();
     
+    /**
+     * Получить текущую локацию существа
+     */
+    Location* getLocation();
+
+    /**
+     * Изменить локацию существа
+     */
+    void changeLocation(Location* location);
+
 private:
     _stats stats;
     bool alive;
     virtual void lvlUp_upgradeStats() = 0;
     bool _is_NPC;
-    
-
+    Location* location; /// Ссылка на текущую локацию существа
 };
 
-#endif /* CREATURE_H */
-
+#endif 

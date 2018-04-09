@@ -1,21 +1,21 @@
 #include<iostream>
 #include "Hero.h"
 #include "Creature.h"
+#include "Location.h"
 using namespace std;
 
 int main() 
 {
-    Hero zaqwer101 = Hero("Platon");
-    Hero dummy = Hero("Dummy");
     
-    zaqwer101.__debug_printStats();
-    
-    while(dummy.isAlive())
-    {
-        cout << zaqwer101.getStats().name << " атаковал " << dummy.getStats().name << ", нанеся " << zaqwer101.attack(dummy) << " единиц урона" << endl;
-    }
+   Location l1 = Location(1,1);
+   cout << l1.getPosition()[0] << "/" << l1.getPosition()[1] << endl;
 
-    zaqwer101.takeExp(300);
-    zaqwer101.__debug_printStats();
+   Hero platon = Hero("Platon");
+    
+   platon.changeLocation(&l1);
+
+   cout << l1.getMembers()[0]->getStats().name << endl;
+
+   cout << platon.getLocation()->getPosition()[0] << "/" << platon.getLocation()->getPosition()[1] << endl;
+
 }
-

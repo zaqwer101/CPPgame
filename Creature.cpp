@@ -107,3 +107,14 @@ bool Creature::is_NPC()
 {
     return _is_NPC;
 }
+
+void Creature::changeLocation(Location* location)
+{
+    this->location = location;
+    this->location->addMember(this);
+}
+
+Location* Creature::getLocation()
+{
+    return this->location;
+}
