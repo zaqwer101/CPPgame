@@ -15,6 +15,7 @@ public:
     
     /**
      * Получить координаты локации
+     * @return Вектор, где 0 - x, 1 - y
      */
     vector<int> getPosition();
     
@@ -31,10 +32,7 @@ public:
     
 
 private:
-    /**
-     * Координаты локации
-     */
-    int x, y; 
+    int x, y; /// Координаты локации
     vector<Creature*> members;
 };
 

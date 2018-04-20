@@ -28,7 +28,7 @@ class Creature {
 public:
     Creature(string name, int hp, int mana, int armor, int damage, bool _is_NPC, string type, int time_attack);
     struct _stats getStats();
-    map<string,int> timings;
+    map<string,int> timings; /// Ассоциативный массив, в котором хранится время, необходимое на выполнение определенных действий
 
     int attack(Creature &_target);
     void takeDamage_phys(int damage, Creature* attacker);
@@ -55,8 +55,7 @@ public:
     * Изменить максимальный уровень здоровья существа.
     */
     void changeMaxHP(int value);
-    
-    /// Debug method
+
     void __debug_printStats();
     
     /**
@@ -94,12 +93,12 @@ public:
 
     /**
      * Узнать, чем в данный момент занимается существо
+     * @return Строка-ключ массива timings
      */
     string getCurrentAction();
 
     /**
      * Сколько шагов осталось до окончания текущего действия
-     * @return Количество шагов
      */
     int getActionRemainingTime();
 

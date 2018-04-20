@@ -13,7 +13,6 @@ public:
     
     /**
      * Будет ли NPC нападать на всех героев (Hero), которых встречает
-     * @return 
      */
     bool isAggressive(); 
 
