@@ -33,10 +33,14 @@ struct _stats Creature::getStats() {
     return this->stats;
 }
 
-void Creature::takeDamage_phys(int damage) {
+void Creature::takeDamage_phys(int damage, Creature* attacker) {
     int tmp = this->stats.hp;
     this->stats.hp = this->stats.hp - (damage - this->stats.armor);
     LOG(stats.name + " получил " + to_string(tmp - stats.hp) + " единиц физического урона");
+    if(target == NULL)
+    {
+        selectTarget(attacker);
+    }
     if (this->stats.hp <= 0) {
         this->die();
     }
@@ -51,7 +55,7 @@ int Creature::attack(Creature &_target) {
     int tmp = _target.stats.hp;
     if (_target.isAlive()) {
         LOG(getStats().name + " атаковал " + getTarget()->getStats().name);
-        _target.takeDamage_phys(this->stats.damage);
+        _target.takeDamage_phys(this->stats.damage, this);
     }
 
     if (!_target.isAlive()) {

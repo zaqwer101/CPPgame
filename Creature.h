@@ -31,7 +31,7 @@ public:
     map<string,int> timings;
 
     int attack(Creature &_target);
-    void takeDamage_phys(int damage);
+    void takeDamage_phys(int damage, Creature* attacker);
     
     void die();
     bool isAlive();
