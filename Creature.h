@@ -3,6 +3,7 @@
 
 #include<iostream>
 #include "Location.h"
+#include<map>
 
 using namespace std;
 
@@ -26,7 +27,8 @@ class Creature {
 public:
     Creature(string name, int hp, int mana, int armor, int damage, bool _is_NPC, string type);
     struct _stats getStats();
-    
+    map<string,int> timings;
+
     int attack(Creature &target);
     void takeDamage_phys(int damage);
     
@@ -72,14 +74,36 @@ public:
 
     /**
      * Изменить локацию существа
+     * @param Ссылка на целевую локацию
      */
     void changeLocation(Location* location);
 
+    /**
+     * Находится ли существо в сражении с данный момент
+     */
+    bool isInBattle();
+
+    /**
+     * Выбрать цель для атаки
+     * @param Ссылка на существо противника
+     */
+    void selectTarget(Creature* target);
+
+    /**
+     * Получить текущую цель существа
+     * @return Ссылка на существо противника
+     */
+    Creature* getTarget();
+
+
+
 private:
+    bool is_in_battle;
     _stats stats;
     bool alive;
     virtual void lvlUp_upgradeStats() = 0;
     bool _is_NPC;
+    Creature* target;
     Location* location; /// Ссылка на текущую локацию существа
 };
 

@@ -18,7 +18,9 @@ Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is
     this->alive = true;
     
     this->_is_NPC = is_NPC;
-    this->stats.type = type; 
+    this->stats.type = type;
+
+    is_in_battle = false;
 }
 
 struct _stats Creature::getStats(){
@@ -117,4 +119,16 @@ void Creature::changeLocation(Location* location)
 Location* Creature::getLocation()
 {
     return this->location;
+}
+
+bool Creature::isInBattle() {
+    return this->is_in_battle;
+}
+
+void Creature::selectTarget(Creature *target) {
+    this->target = target;
+}
+
+Creature *Creature::getTarget() {
+    return this->target;
 }
