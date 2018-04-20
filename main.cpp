@@ -14,17 +14,17 @@ static void worldActionStep(vector<Location *> world) {
     }
 }
 
-int main() 
-{
+// GPG test
+int main() {
     int step = 0;
     vector<Location *> world;
-   Location l1 = Location(1,1);
+    Location l1 = Location(1, 1);
     world.push_back(&l1);
 
-   Hero platon = Hero("Platon");
+    Hero platon = Hero("Platon");
     StupidOgre enemy = StupidOgre("Ogre");
 
-   platon.changeLocation(&l1);
+    platon.changeLocation(&l1);
     enemy.changeLocation(&l1);
 
     while (platon.isAlive()) {
