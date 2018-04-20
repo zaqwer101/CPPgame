@@ -9,7 +9,7 @@ void StupidOgre::lvlUp_upgradeStats() {
 
 void StupidOgre::AI() {
     if (this->getCurrentAction() == "idle") {
-        if (getTarget() == NULL) {
+        if (getTarget() == nullptr) {
             for (Creature *c : this->getLocation()->getMembers()) {
                 if (c->getStats().type == "Hero") {
                     this->selectTarget(c);

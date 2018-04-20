@@ -26,7 +26,7 @@ Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is
     this->currentActionRemainingTime = 0;
 
     this->timings["attack"] = time_attack;
-    this->target = NULL;
+    this->target = nullptr;
 }
 
 struct _stats Creature::getStats() {
@@ -37,7 +37,7 @@ void Creature::takeDamage_phys(int damage, Creature* attacker) {
     int tmp = this->stats.hp;
     this->stats.hp = this->stats.hp - (damage - this->stats.armor);
     LOG(stats.name + " получил " + to_string(tmp - stats.hp) + " единиц физического урона");
-    if(target == NULL)
+    if(target == nullptr)
     {
         selectTarget(attacker);
     }
