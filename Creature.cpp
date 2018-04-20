@@ -48,8 +48,10 @@ int Creature::attack(Creature &_target) {
     this->is_in_battle = true;
 
     int tmp = _target.stats.hp;
-    if (_target.isAlive())
+    if (_target.isAlive()) {
+        LOG(getStats().name + " атаковал " + getTarget()->getStats().name);
         _target.takeDamage_phys(this->stats.damage);
+    }
 
     if (!_target.isAlive()) {
         this->takeExp(_target.stats.maxhp);
@@ -76,6 +78,7 @@ void Creature::takeExp(int exp) {
 void Creature::die() {
     this->stats.hp = 0;
     this->alive = false;
+    LOG(stats.name + " умер");
 }
 
 bool Creature::isAlive() {
@@ -87,6 +90,7 @@ void Creature::lvlUp() {
     this->stats.exp_to_level *= 2;
     this->stats.level++;
     this->lvlUp_upgradeStats();
+    LOG(stats.name + " получил уровень " + to_string(stats.level));
 }
 
 void Creature::changeDamage(int value) {

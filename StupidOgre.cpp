@@ -1,5 +1,4 @@
 #include "StupidOgre.h"
-#include "Core.cpp"
 
 StupidOgre::StupidOgre(const string &name) : Creature_NPC(name, 100, 0, 2, 5, true, "Ogre", 5) {}
 
@@ -19,7 +18,6 @@ void StupidOgre::AI() {
             }
         } else {
             attack(*getTarget());
-            LOG(getStats().name + " атаковал " + getTarget()->getStats().name);
         }
     }
 }

@@ -14,7 +14,6 @@ static void worldActionStep(vector<Location *> world) {
     }
 }
 
-// GPG test
 int main() {
     int step = 0;
     vector<Location *> world;
@@ -28,10 +27,11 @@ int main() {
     enemy.changeLocation(&l1);
 
     while (platon.isAlive()) {
+        step++;
+        cout << step << endl;
         enemy.AI();
         worldActionStep(world);
-        step++;
     }
 
-    cout << step << endl;
+
 }

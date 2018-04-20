@@ -4,6 +4,7 @@
 #include<iostream>
 #include "Location.h"
 #include<map>
+#include "Core.cpp"
 
 using namespace std;
 
