@@ -28,10 +28,13 @@ int main() {
 
     while (platon.isAlive()) {
         step++;
-        cout << step << endl;
+        cout << "Шаг: " << step << endl;
         enemy.AI();
         worldActionStep(world);
     }
+
+    platon.__debug_printStats();
+    enemy.__debug_printStats();
 
 
 }

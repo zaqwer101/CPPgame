@@ -34,8 +34,9 @@ struct _stats Creature::getStats() {
 }
 
 void Creature::takeDamage_phys(int damage) {
+    int tmp = this->stats.hp;
     this->stats.hp = this->stats.hp - (damage - this->stats.armor);
-
+    LOG(stats.name + " получил " + to_string(tmp - stats.hp) + " единиц физического урона");
     if (this->stats.hp <= 0) {
         this->die();
     }
@@ -62,7 +63,7 @@ int Creature::attack(Creature &_target) {
 
 void Creature::takeExp(int exp) {
     int delta = exp;
-
+    LOG(stats.name + " получает " + to_string(exp) + " единиц опыта");
     while (delta >= 0) {
         this->stats.exp += delta;
 
@@ -100,7 +101,7 @@ void Creature::changeDamage(int value) {
 
 void Creature::changeMaxHP(int value) {
     this->stats.maxhp += value;
-    this->takeDamage_phys(value * -1); // 
+    this->stats.hp += value;
 }
 
 void Creature::__debug_printStats() {
@@ -133,6 +134,7 @@ bool Creature::isInBattle() {
 
 void Creature::selectTarget(Creature *target) {
     this->target = target;
+    LOG(stats.name + " выбирает целью " + target->getStats().name);
 }
 
 Creature *Creature::getTarget() {
