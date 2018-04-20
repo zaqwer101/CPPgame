@@ -4,10 +4,7 @@
 #include "Creature.h"
 using namespace std;
 
-/**
- Абстрактный класс, от которого будут наследоваться все NPC-существа в мире
- */
-class Creature_NPC : public Creature {
+class Creature_NPC : public Creature { /// Абстрактный класс, от которого будут наследоваться все NPC-существа в мире
 public:
     Creature_NPC(string name, int hp, int mana, int armor, int damage, bool aggressive, string type, int time_attack);
     

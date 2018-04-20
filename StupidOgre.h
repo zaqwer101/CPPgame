@@ -4,7 +4,7 @@
 
 #include "Creature_NPC.h"
 
-class StupidOgre : public Creature_NPC {
+class StupidOgre : public Creature_NPC { /// Тестовый NPC-противник с примитивным ИИ
 public:
     StupidOgre(const string &name);
 

@@ -24,7 +24,7 @@ struct _stats
         int level, exp, exp_to_level;
 };
 
-class Creature {
+class Creature { /// Базовый класс существа
 public:
     Creature(string name, int hp, int mana, int armor, int damage, bool _is_NPC, string type, int time_attack);
     struct _stats getStats();

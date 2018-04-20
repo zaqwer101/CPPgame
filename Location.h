@@ -8,7 +8,7 @@ class Creature;
 
 using namespace std;
 
-class Location {
+class Location { 
 
 public:
     Location(int x, int y);

@@ -6,6 +6,7 @@ Creature_NPC::Creature_NPC(string name, int hp, int mana, int armor, int damage,
     this->_aggressive = isAggressive;
 }
 
+
 bool Creature_NPC::isAggressive()
 {
     return this->_aggressive; 

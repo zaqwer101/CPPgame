@@ -4,7 +4,7 @@
 #include "Creature.h"
 
 
-class Hero : public Creature {
+class Hero : public Creature { /// Класс героя, единственного в мире наследника данного класса
 public:
     
     Hero(string name);
