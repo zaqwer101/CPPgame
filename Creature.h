@@ -25,11 +25,11 @@ struct _stats
 
 class Creature {
 public:
-    Creature(string name, int hp, int mana, int armor, int damage, bool _is_NPC, string type);
+    Creature(string name, int hp, int mana, int armor, int damage, bool _is_NPC, string type, int time_attack);
     struct _stats getStats();
     map<string,int> timings;
 
-    int attack(Creature &target);
+    int attack(Creature &_target);
     void takeDamage_phys(int damage);
     
     void die();
@@ -37,7 +37,6 @@ public:
     
     /**
      * Получить очки опыта
-     * @param exp
      */
     void takeExp(int exp);
     
@@ -48,13 +47,11 @@ public:
     
     /**
      * Изменить максимальный уровень урона существа
-     * @param value
      */
     void changeDamage(int value);
     
     /**
     * Изменить максимальный уровень здоровья существа.
-    * @param value
     */
     void changeMaxHP(int value);
     
@@ -63,7 +60,6 @@ public:
     
     /**
      * Является ли существо NPC
-     * @return 
      */
     bool is_NPC();
     
@@ -74,7 +70,7 @@ public:
 
     /**
      * Изменить локацию существа
-     * @param Ссылка на целевую локацию
+     * @param Указатель на целевую локацию
      */
     void changeLocation(Location* location);
 
@@ -85,26 +81,43 @@ public:
 
     /**
      * Выбрать цель для атаки
-     * @param Ссылка на существо противника
+     * @param Указатель на существо противника
      */
     void selectTarget(Creature* target);
 
     /**
      * Получить текущую цель существа
-     * @return Ссылка на существо противника
+     * @return Указатель на существо противника
      */
     Creature* getTarget();
 
+    /**
+     * Узнать, чем в данный момент занимается существо
+     */
+    string getCurrentAction();
 
+    /**
+     * Сколько шагов осталось до окончания текущего действия
+     * @return Количество шагов
+     */
+    int getActionRemainingTime();
+
+    /**
+     * Выполнить шаг времени для текущего задания
+     */
+    void currentActionStep();
 
 private:
+    string currentAction;
+    int currentActionRemainingTime;
+
     bool is_in_battle;
     _stats stats;
     bool alive;
     virtual void lvlUp_upgradeStats() = 0;
     bool _is_NPC;
-    Creature* target;
-    Location* location; /// Ссылка на текущую локацию существа
+    Creature *target;
+    Location *location; /// Указатель на текущую локацию существа
 };
 
 #endif 

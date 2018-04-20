@@ -9,7 +9,7 @@ using namespace std;
  */
 class Creature_NPC : public Creature {
 public:
-    Creature_NPC(string name, int hp, int mana, int armor, int damage, bool aggressive, string type);
+    Creature_NPC(string name, int hp, int mana, int armor, int damage, bool aggressive, string type, int time_attack);
     
     /**
      * Будет ли NPC нападать на всех героев (Hero), которых встречает

@@ -1,6 +1,6 @@
 #include "Creature.h"
 
-Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is_NPC, string type) {
+Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is_NPC, string type, int time_attack) {
     this->stats.armor = armor;
     this->stats.maxarmor = armor;
     this->stats.name = name;
@@ -21,6 +21,12 @@ Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is
     this->stats.type = type;
 
     is_in_battle = false;
+
+    this->currentAction = "idle";
+    this->currentActionRemainingTime = 0;
+
+    this->timings["attack"] = time_attack;
+    this->target = NULL;
 }
 
 struct _stats Creature::getStats(){
@@ -36,16 +42,22 @@ void Creature::takeDamage_phys(int damage) {
     }
 }
 
-int Creature::attack(Creature &target) {
-    int tmp = target.stats.hp;
-    if(target.isAlive())
-        target.takeDamage_phys(this->stats.damage);
-    
-    if( !target.isAlive() ) 
+int Creature::attack(Creature &_target) {
+    this->currentAction = "attack";
+    this->currentActionRemainingTime = this->timings["attack"];
+
+    this->is_in_battle = true;
+
+    int tmp = _target.stats.hp;
+    if (_target.isAlive())
+        _target.takeDamage_phys(this->stats.damage);
+
+    if (!_target.isAlive())
     {
-        this->takeExp(target.stats.maxhp);
+        this->takeExp(_target.stats.maxhp);
+        this->is_in_battle = false; // Противник погиб, мы больше не сражаемся
     }
-    return tmp - target.stats.hp;
+    return tmp - _target.stats.hp;
 }
 
 void Creature::takeExp(int exp) {
@@ -131,4 +143,20 @@ void Creature::selectTarget(Creature *target) {
 
 Creature *Creature::getTarget() {
     return this->target;
+}
+
+string Creature::getCurrentAction() {
+    return this->currentAction;
+}
+
+int Creature::getActionRemainingTime() {
+    return this->currentActionRemainingTime;
+}
+
+void Creature::currentActionStep() {
+    currentActionRemainingTime--;
+    if (currentActionRemainingTime <= 0) {
+        currentAction = "idle";
+        currentActionRemainingTime = 0;
+    }
 }

@@ -2,20 +2,36 @@
 #include "Hero.h"
 #include "Creature.h"
 #include "Location.h"
+#include "StupidOgre.h"
+
 using namespace std;
+
+static void worldActionStep(vector<Location *> world) {
+    for (Location *l : world) {
+        for (Creature *c : l->getMembers()) {
+            c->currentActionStep();
+        }
+    }
+}
 
 int main() 
 {
-    
+    int step = 0;
+    vector<Location *> world;
    Location l1 = Location(1,1);
-   cout << l1.getPosition()[0] << "/" << l1.getPosition()[1] << endl;
+    world.push_back(&l1);
 
    Hero platon = Hero("Platon");
-    
+    StupidOgre enemy = StupidOgre("Ogre");
+
    platon.changeLocation(&l1);
+    enemy.changeLocation(&l1);
 
-   cout << l1.getMembers()[0]->getStats().name << endl;
+    while (platon.isAlive()) {
+        enemy.AI();
+        worldActionStep(world);
+        step++;
+    }
 
-   cout << platon.getLocation()->getPosition()[0] << "/" << platon.getLocation()->getPosition()[1] << endl;
-
+    cout << step << endl;
 }
