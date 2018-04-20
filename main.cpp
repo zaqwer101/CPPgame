@@ -3,12 +3,18 @@
 #include "Creature.h"
 #include "Location.h"
 #include "StupidOgre.h"
+#include <ncurses.h>
 
 using namespace std;
 
 static void worldActionStep(vector<Location *> world) {
     for (Location *l : world) {
         for (Creature *c : l->getMembers()) {
+
+            if(c->is_NPC())
+            {
+                dynamic_cast<Creature_NPC*>(c)->AI();
+            }
             c->currentActionStep();
         }
     }
@@ -29,12 +35,6 @@ int main() {
     while (platon.isAlive()) {
         step++;
         cout << "Шаг: " << step << endl;
-        enemy.AI();
         worldActionStep(world);
     }
-
-    platon.__debug_printStats();
-    enemy.__debug_printStats();
-
-
 }
