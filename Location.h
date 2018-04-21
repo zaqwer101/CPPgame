@@ -18,10 +18,10 @@ public:
      * @return Вектор, где 0 - x, 1 - y
      */
     vector<int> getPosition();
-    
+
     /**
      * Добавить существо в локацию
-     * @param Указатель на добавляемое существо
+     * @param creature Указатель на добавляемое существо
      */
     void addMember(Creature* creature);
 

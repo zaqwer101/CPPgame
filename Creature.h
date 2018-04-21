@@ -70,7 +70,7 @@ public:
 
     /**
      * Изменить локацию существа
-     * @param Указатель на целевую локацию
+     * @param location Указатель на целевую локацию
      */
     void changeLocation(Location* location);
 
@@ -81,7 +81,7 @@ public:
 
     /**
      * Выбрать цель для атаки
-     * @param Указатель на существо противника
+     * @param target Указатель на существо противника
      */
     void selectTarget(Creature* target);
 
