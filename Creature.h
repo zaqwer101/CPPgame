@@ -4,14 +4,12 @@
 #include<iostream>
 #include "Location.h"
 #include<map>
-#include "Core.cpp"
 
 using namespace std;
 
 struct _stats 
 {
         string name;
-
         /**
          * Тип существа (e.g. "Ogre"). 
         */
@@ -107,6 +105,17 @@ public:
      */
     void currentActionStep();
 
+    /**
+     * Записать сообщение в лог существа
+     */
+    void LOG(string message);
+
+    /**
+     * Возвращает некоторое количество последних записей лога
+     * @param count Количество записей с конца
+     */
+    vector<string> getLastLog(int count);
+
 private:
     string currentAction;
     int currentActionRemainingTime;
@@ -118,6 +127,8 @@ private:
     bool _is_NPC;
     Creature *target;
     Location *location; /// Указатель на текущую локацию существа
+    vector<string> log;
+    int step;
 };
 
 #endif 

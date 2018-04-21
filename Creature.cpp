@@ -27,6 +27,8 @@ Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is
 
     this->timings["attack"] = time_attack;
     this->target = nullptr;
+
+    this->step = 0;
 }
 
 struct _stats Creature::getStats() {
@@ -36,7 +38,7 @@ struct _stats Creature::getStats() {
 void Creature::takeDamage_phys(int damage, Creature* attacker) {
     int tmp = this->stats.hp;
     this->stats.hp = this->stats.hp - (damage - this->stats.armor);
-    LOG(stats.name + " получил " + to_string(tmp - stats.hp) + " единиц физического урона");
+    LOG(stats.name + " taken " + to_string(tmp - stats.hp) + " physical damage from " + attacker->getStats().name);
     if(target == nullptr)
     {
         selectTarget(attacker);
@@ -54,20 +56,21 @@ int Creature::attack(Creature &_target) {
 
     int tmp = _target.stats.hp;
     if (_target.isAlive()) {
-        LOG(getStats().name + " атаковал " + getTarget()->getStats().name);
+        LOG(getStats().name + " attacked " + getTarget()->getStats().name);
         _target.takeDamage_phys(this->stats.damage, this);
     }
 
     if (!_target.isAlive()) {
         this->takeExp(_target.stats.maxhp);
         this->is_in_battle = false; // Противник погиб, мы больше не сражаемся
+        LOG("Enemy " + target->getStats().name + " died");
     }
     return tmp - _target.stats.hp;
 }
 
 void Creature::takeExp(int exp) {
     int delta = exp;
-    LOG(stats.name + " получает " + to_string(exp) + " единиц опыта");
+    LOG(stats.name + " got " + to_string(exp) + " experience");
     while (delta >= 0) {
         this->stats.exp += delta;
 
@@ -77,13 +80,12 @@ void Creature::takeExp(int exp) {
         } else
             break;
     }
-
 }
 
 void Creature::die() {
     this->stats.hp = 0;
     this->alive = false;
-    LOG(stats.name + " умер");
+    LOG(stats.name + " died");
 }
 
 bool Creature::isAlive() {
@@ -95,7 +97,7 @@ void Creature::lvlUp() {
     this->stats.exp_to_level *= 2;
     this->stats.level++;
     this->lvlUp_upgradeStats();
-    LOG(stats.name + " получил уровень " + to_string(stats.level));
+    LOG(stats.name + " reached level " + to_string(stats.level));
 }
 
 void Creature::changeDamage(int value) {
@@ -138,7 +140,7 @@ bool Creature::isInBattle() {
 
 void Creature::selectTarget(Creature *target) {
     this->target = target;
-    LOG(stats.name + " выбирает целью " + target->getStats().name);
+    LOG(stats.name + " choose target " + target->getStats().name);
 }
 
 Creature *Creature::getTarget() {
@@ -155,8 +157,27 @@ int Creature::getActionRemainingTime() {
 
 void Creature::currentActionStep() {
     currentActionRemainingTime--;
+    step++;
+    LOG("Step: " + to_string(step));
     if (currentActionRemainingTime <= 0) {
         currentAction = "idle";
         currentActionRemainingTime = 0;
+    }
+}
+
+
+void Creature::LOG(string message) {
+    log.push_back(message);
+}
+
+vector<string> Creature::getLastLog(int count) {
+    if (count >= log.size()) {
+        return log;
+    } else {
+        vector<string> tmp;
+        for (int i = (log.size() - count); i < log.size(); i++) {
+            tmp.push_back(log[i]);
+        }
+        return tmp;
     }
 }

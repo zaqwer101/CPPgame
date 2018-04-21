@@ -6,4 +6,3 @@ void Hero::lvlUp_upgradeStats() {
     this->changeDamage(2);
     this->changeMaxHP(10);
 }
-
