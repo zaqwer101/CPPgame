@@ -17,7 +17,7 @@ void StupidOgre::AI() {
                 }
             }
         } else {
-            attack(*getTarget());
+            attack();
         }
     }
 }

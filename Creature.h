@@ -28,7 +28,7 @@ public:
     struct _stats getStats();
     map<string,int> timings; /// Ассоциативный массив, в котором хранится время, необходимое на выполнение определенных действий
 
-    int attack(Creature &_target);
+    int attack();
     void takeDamage_phys(int damage, Creature* attacker);
     
     void die();
@@ -115,6 +115,7 @@ public:
      * @param count Количество записей с конца
      */
     vector<string> getLastLog(int count);
+    
 
 private:
     string currentAction;
@@ -123,7 +124,7 @@ private:
     bool is_in_battle;
     _stats stats;
     bool alive;
-    virtual void lvlUp_upgradeStats() = 0;
+    virtual void lvlUp_upgradeStats();
     bool _is_NPC;
     Creature *target;
     Location *location; /// Указатель на текущую локацию существа

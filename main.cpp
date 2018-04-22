@@ -61,10 +61,12 @@ void base_handler() {
 
     while (platon.isAlive()) {
         worldActionStep(world);
+        cout << platon.getLastLog(1)[0] << endl;
     }
 }
 
-int main() {
+void ncurses_handler()
+{
     initscr();
 
     vector<Location *> world;
@@ -83,6 +85,10 @@ int main() {
     }
     getch();
     endwin();
+}
 
+int main() {
+
+    base_handler();
     return 0;
 }

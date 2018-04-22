@@ -48,24 +48,24 @@ void Creature::takeDamage_phys(int damage, Creature* attacker) {
     }
 }
 
-int Creature::attack(Creature &_target) {
+int Creature::attack() {
     this->currentAction = "attack";
     this->currentActionRemainingTime = this->timings["attack"];
-
+    Creature* _target = getTarget();
     this->is_in_battle = true;
 
-    int tmp = _target.stats.hp;
-    if (_target.isAlive()) {
+    int tmp = getTarget()->getStats().hp;
+    if (getTarget()->isAlive()) {
         LOG(getStats().name + " attacked " + getTarget()->getStats().name);
-        _target.takeDamage_phys(this->stats.damage, this);
+        getTarget()->takeDamage_phys(this->stats.damage, this);
     }
 
-    if (!_target.isAlive()) {
-        this->takeExp(_target.stats.maxhp);
+    if (!getTarget()->isAlive()) {
+        this->takeExp(getTarget()->stats.maxhp);
         this->is_in_battle = false; // Противник погиб, мы больше не сражаемся
         LOG("Enemy " + target->getStats().name + " died");
     }
-    return tmp - _target.stats.hp;
+    return tmp - getTarget()->stats.hp;
 }
 
 void Creature::takeExp(int exp) {
@@ -165,7 +165,6 @@ void Creature::currentActionStep() {
     }
 }
 
-
 void Creature::LOG(string message) {
     log.push_back(message);
 }
@@ -180,4 +179,9 @@ vector<string> Creature::getLastLog(int count) {
         }
         return tmp;
     }
+}
+
+void Creature::lvlUp_upgradeStats() {
+    this->changeDamage(static_cast<int>(getStats().damage / 5));
+    this->changeMaxHP(static_cast<int>(getStats().maxhp / 5));
 }
