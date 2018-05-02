@@ -1,5 +1,6 @@
 #include "Creature.h"
 
+
 Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is_NPC, string type, int time_attack) {
     this->stats.armor = armor;
     this->stats.maxarmor = armor;
@@ -10,24 +11,19 @@ Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is
     this->stats.maxmana = mana;
     this->stats.damage = damage;
     this->stats.maxdamage = damage;
-
     this->stats.level = 1;
     this->stats.exp = 0;
     this->stats.exp_to_level = 100;
 
     this->alive = true;
-
     this->_is_NPC = is_NPC;
     this->stats.type = type;
-
     is_in_battle = false;
-
-    this->currentAction = "idle";
-    this->currentActionRemainingTime = 0;
-
-    this->timings["attack"] = time_attack;
     this->target = nullptr;
 
+    this->currentAction = ACTION_IDLE;
+    this->currentActionRemainingTime = 0;
+    this->timings[ACTION_ATTACK] = time_attack;
     this->step = 0;
 }
 
@@ -48,13 +44,10 @@ void Creature::takeDamage_phys(int damage, Creature* attacker) {
     }
 }
 
-int Creature::attack() {
-    this->currentAction = "attack";
-    this->currentActionRemainingTime = this->timings["attack"];
+void Creature::attack() {
     Creature* _target = getTarget();
     this->is_in_battle = true;
 
-    int tmp = getTarget()->getStats().hp;
     if (getTarget()->isAlive()) {
         LOG(getStats().name + " attacked " + getTarget()->getStats().name);
         getTarget()->takeDamage_phys(this->stats.damage, this);
@@ -65,7 +58,6 @@ int Creature::attack() {
         this->is_in_battle = false; // Противник погиб, мы больше не сражаемся
         LOG("Enemy " + target->getStats().name + " died");
     }
-    return tmp - getTarget()->stats.hp;
 }
 
 void Creature::takeExp(int exp) {
@@ -147,22 +139,34 @@ Creature *Creature::getTarget() {
     return this->target;
 }
 
-string Creature::getCurrentAction() {
+int Creature::actionGet() {
     return this->currentAction;
 }
 
-int Creature::getActionRemainingTime() {
+void Creature::actionStart(int action) {
+    if (actionGet() == 0) {
+        this->currentAction = action;
+        this->currentActionRemainingTime = this->timings[ACTION_ATTACK];
+    }
+}
+
+int Creature::actionGetTime() {
     return this->currentActionRemainingTime;
 }
 
-void Creature::currentActionStep() {
-    currentActionRemainingTime--;
+void Creature::actionStep() {
     step++;
     LOG("Step: " + to_string(step));
     if (currentActionRemainingTime <= 0) {
-        currentAction = "idle";
+        switch (currentAction) {
+            case ACTION_ATTACK:
+                attack();
+                break;
+        }
+        currentAction = ACTION_IDLE;
         currentActionRemainingTime = 0;
     }
+    currentActionRemainingTime--;
 }
 
 void Creature::LOG(string message) {
@@ -185,3 +189,5 @@ void Creature::lvlUp_upgradeStats() {
     this->changeDamage(static_cast<int>(getStats().damage / 5));
     this->changeMaxHP(static_cast<int>(getStats().maxhp / 5));
 }
+
+

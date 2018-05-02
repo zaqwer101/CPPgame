@@ -4,8 +4,13 @@
 #include<iostream>
 #include "Location.h"
 #include<map>
+#include <functional>
 
 using namespace std;
+
+#define ACTION_IDLE 0
+#define ACTION_ATTACK 1
+
 
 struct _stats 
 {
@@ -22,13 +27,16 @@ struct _stats
         int level, exp, exp_to_level;
 };
 
+
 class Creature { /// Базовый класс существа
 public:
     Creature(string name, int hp, int mana, int armor, int damage, bool _is_NPC, string type, int time_attack);
     struct _stats getStats();
-    map<string,int> timings; /// Ассоциативный массив, в котором хранится время, необходимое на выполнение определенных действий
 
-    int attack();
+    /// Ассоциативный массив, в котором хранится время, необходимое на выполнение определенных действий
+    map<int, int> timings;
+
+    void attack();
     void takeDamage_phys(int damage, Creature* attacker);
     
     void die();
@@ -93,17 +101,23 @@ public:
      * Узнать, чем в данный момент занимается существо
      * @return Строка-ключ массива timings
      */
-    string getCurrentAction();
+    int actionGet();
 
     /**
      * Сколько шагов осталось до окончания текущего действия
      */
-    int getActionRemainingTime();
+    int actionGetTime();
 
     /**
      * Выполнить шаг времени для текущего задания
      */
-    void currentActionStep();
+    void actionStep();
+
+    /**
+     * Начать выполнение действия
+     * @param action
+     */
+    void actionStart(int action);
 
     /**
      * Записать сообщение в лог существа
@@ -115,19 +129,21 @@ public:
      * @param count Количество записей с конца
      */
     vector<string> getLastLog(int count);
+
     
 
 private:
-    string currentAction;
-    int currentActionRemainingTime;
 
+    int currentAction;
+    int currentActionRemainingTime;
     bool is_in_battle;
     _stats stats;
     bool alive;
     virtual void lvlUp_upgradeStats();
     bool _is_NPC;
     Creature *target;
-    Location *location; /// Указатель на текущую локацию существа
+    /// Указатель на текущую локацию существа
+    Location *location;
     vector<string> log;
     int step;
 };
