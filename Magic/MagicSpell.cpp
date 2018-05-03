@@ -3,7 +3,7 @@
 //
 
 #include "MagicSpell.h"
-#include "Creature.h"
+#include "../Creature.h"
 
 MagicSpell::MagicSpell(string name, string type, int cooldown, int power, int manacost, int cast_time) {
     this->type = type;
@@ -13,6 +13,7 @@ MagicSpell::MagicSpell(string name, string type, int cooldown, int power, int ma
     this->caster = caster;
     this->name = name;
     this->cast_time = cast_time;
+    this->remaining_time = 0;
 }
 
 int MagicSpell::getPower() {

@@ -3,6 +3,7 @@
 #include "Creature.h"
 #include "Location.h"
 #include "StupidOgre.h"
+#include "Magic/Fireball.h"
 #include <ncurses.h>
 #include <string>
 
@@ -82,10 +83,15 @@ int main() {
     platon.changeLocation(&l1);
     enemy.changeLocation(&l1);
 
+    platon.addSpell(new Fireball(10, 20));
+
     while (platon.isAlive()) {
         worldActionStep(world);
-        cout << enemy.getLastLog(1)[0] << endl;
+        platon.castSpell(platon.spellBook[0]);
+        //cout << enemy.getLastLog(1)[0] << endl;
     }
-
+    for (string msg : platon.getLog()) {
+        cout << msg << endl;
+    }
     return 0;
 }

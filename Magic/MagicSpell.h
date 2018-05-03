@@ -17,6 +17,10 @@ public:
     virtual void use();
 
     string name;
+    int cooldown;
+
+    /// Время, оставшееся до истечения кулдауна и появления возможности использовать заклинание
+    int remaining_time;
 
     int getPower();
 
@@ -32,7 +36,6 @@ public:
 
 private:
     string type;
-    int cooldown;
     int power;
     int manacost;
     int cast_time;

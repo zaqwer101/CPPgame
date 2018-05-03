@@ -25,6 +25,8 @@ Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is
     this->currentActionRemainingTime = 0;
     this->timings[ACTION_ATTACK] = time_attack;
     this->step = 0;
+
+    this->resists["fire"] = 0;
 }
 
 struct stats Creature::getStats() {
@@ -45,12 +47,12 @@ void Creature::takeDamage_phys(int damage, Creature* attacker) {
     }
 }
 
-void Creature::takeDamage_magic(Creature *attacker, MagicSpell spell) {
+void Creature::takeDamage_magic(Creature *attacker, MagicSpell *spell) {
     int tmp = this->getStats().hp;
     this->_stats.hp -= static_cast<int>(
-            spell.getPower() - (spell.getPower() * getResist(spell.getType()))
+            spell->getPower() - (spell->getPower() * getResist(spell->getType()))
     );
-    LOG(_stats.name + " taken " + to_string(tmp - _stats.hp) + " " + spell.getType() + " damage from " +
+    LOG(_stats.name + " taken " + to_string(tmp - _stats.hp) + " " + spell->getType() + " damage from " +
         attacker->getStats().name);
 
     if (this->_stats.hp <= 0) {
@@ -60,11 +62,24 @@ void Creature::takeDamage_magic(Creature *attacker, MagicSpell spell) {
             selectTarget(attacker);
         }
     }
-
 }
 
-void Creature::attack() {
-    Creature* _target = getTarget();
+void Creature::attack_magic() {
+    this->is_in_battle = true;
+    if (getTarget()->isAlive()) {
+        getTarget()->takeDamage_magic(this, currentSpell);
+        LOG(_stats.name + " casted " + currentSpell->name + " on " + getTarget()->_stats.name);
+    }
+
+    if (!getTarget()->isAlive()) {
+        this->takeExp(getTarget()->_stats.maxhp);
+        this->is_in_battle = false; // Противник погиб, мы больше не сражаемся
+        LOG("Enemy " + getTarget()->getStats().name + " died");
+    }
+}
+
+void Creature::attack_phys() {
+    Creature *_target = getTarget();
     this->is_in_battle = true;
 
     if (getTarget()->isAlive()) {
@@ -179,13 +194,20 @@ void Creature::actionStep() {
     if (currentActionRemainingTime <= 0) {
         switch (currentAction) {
             case ACTION_ATTACK:
-                attack();
+                attack_phys();
+                break;
+            case ACTION_CAST_SPELL:
+                currentSpell->use();
+                currentSpell = nullptr;
                 break;
         }
         currentAction = ACTION_IDLE;
         currentActionRemainingTime = 0;
     }
     currentActionRemainingTime--;
+
+    // Проходим по кулдаунам
+    updateCooldowns();
 }
 
 void Creature::LOG(string message) {
@@ -204,39 +226,65 @@ vector<string> Creature::getLastLog(int count) {
     }
 }
 
+
 void Creature::lvlUp_upgradeStats() {
     this->changeDamage(static_cast<int>(getStats().damage / 5));
     this->changeMaxHP(static_cast<int>(getStats().maxhp / 5));
 }
 
-void Creature::addSpell(MagicSpell spell) {
+void Creature::addSpell(MagicSpell *spell) {
     bool notAlreadyInSpellBook = true;
 
-    for (MagicSpell a : spellBook) {
-        if (a.name == spell.name && a.getPower() == spell.getPower() && a.getType() == spell.getType()) {
+    for (MagicSpell *a : spellBook) {
+        if (a->name == spell->name && a->getPower() == spell->getPower() && a->getType() == spell->getType()) {
             notAlreadyInSpellBook = false;
             break;
         }
     }
 
     if (notAlreadyInSpellBook) {
-        spell.setCaster(this);
+        spell->setCaster(this);
         spellBook.push_back(spell);
     }
 }
 
-vector<MagicSpell> Creature::getSpells() {
+vector<MagicSpell *> Creature::getSpells() {
     return spellBook;
 }
 
-void Creature::useSpell(MagicSpell spell) {
+void Creature::castSpell(MagicSpell *spell) {
 
-    if (getStats().mana >= spell.getManacost()) {
-        this->_stats.mana -= spell.getManacost();
-        actionStart(ACTION_CAST_SPELL, spell.getCastTime());
-    }
+    if (spell->remaining_time == 0) {
+        if (getStats().mana >= spell->getManacost()) {
+            this->_stats.mana -= spell->getManacost();
+            this->currentSpell = spell;
+            actionStart(ACTION_CAST_SPELL, spell->getCastTime());
+            this->currentSpell->remaining_time = this->currentSpell->cooldown;
+            LOG("Preparing to cast " + spell->name);
+        } else
+            LOG("Not enough mana");
+    } else
+        LOG("This spell is still under cooldown");
 }
 
 int Creature::getResist(string type) {
     return resists[type];
 }
+
+MagicSpell *Creature::getCurrentSpell() {
+    return this->currentSpell;
+}
+
+void Creature::updateCooldowns() {
+
+    for (MagicSpell *spell : spellBook) {
+        if (spell->remaining_time > 0 && currentSpell != spell)
+            spell->remaining_time--;
+    }
+
+}
+
+vector<string> Creature::getLog() {
+    return this->log;
+}
+

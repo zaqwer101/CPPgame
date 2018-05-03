@@ -4,7 +4,7 @@
 #include<iostream>
 #include "Location.h"
 #include<map>
-#include "MagicSpell.h"
+#include "Magic/MagicSpell.h"
 
 using namespace std;
 
@@ -35,14 +35,17 @@ public:
     /// Ассоциативный массив, в котором хранится время, необходимое на выполнение определенных действий
     map<int, int> timings;
 
-    /// Список всех заклинаний, доступных существу
-    vector<MagicSpell> spellBook;
 
-    void attack();
+    /// Список всех заклинаний, доступных существу
+    vector<MagicSpell *> spellBook;
+
+    void attack_phys();
+
+    void attack_magic();
 
     void takeDamage_phys(int damage, Creature *attacker);
 
-    void takeDamage_magic(Creature *attacker, MagicSpell spell);
+    void takeDamage_magic(Creature *attacker, MagicSpell *spell);
 
     void die();
     bool isAlive();
@@ -135,21 +138,23 @@ public:
      */
     vector<string> getLastLog(int count);
 
+    vector<string> getLog();
+
     /**
      * Добавить заклинание в список доступных
      * @param spell
      */
-    void addSpell(MagicSpell spell);
+    void addSpell(MagicSpell *spell);
 
     /**
      * Получить список заклинаний существа
      */
-    vector<MagicSpell> getSpells();
+    vector<MagicSpell *> getSpells();
 
     /**
      * Использовать магию
      */
-    void useSpell(MagicSpell spell);
+    void castSpell(MagicSpell *spell);
 
     /**
      * Получить сопротивление воздействию
@@ -157,6 +162,10 @@ public:
      * @return Значение сопротивления (коэффицент уменьшения урона)
      */
     int getResist(string type);
+
+    MagicSpell *getCurrentSpell();
+
+    void updateCooldowns();
 
 private:
     /**
@@ -174,6 +183,7 @@ private:
     Location *location;
     vector<string> log;
     int step;
+    MagicSpell *currentSpell;
 };
 
 #endif 
