@@ -24,7 +24,7 @@ using namespace std;
     mvwprintw(stdscr, 0, 0, str_hero.c_str());
     mvwprintw(stdscr, 0, static_cast<int>(col / 2 - str_location.length() / 2), str_location.c_str());
     mvwprintw(stdscr, 0, static_cast<int>(col - str_exp.length()), str_exp.c_str());
-    mvwprintw(stdscr, 1, col / 2 - hero->actionGet().length() / 2, hero->actionGet().c_str());
+    mvwprintw(stdscr, 1, col / 2 - hero->actionGet().length() / 2, hero->getAction().c_str());
     mvwprintw(stdscr, 2, 0, "Log:");
 
     vector<string> log = hero->getLastLog(row - 3);

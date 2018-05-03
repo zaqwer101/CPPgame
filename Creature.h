@@ -4,15 +4,14 @@
 #include<iostream>
 #include "Location.h"
 #include<map>
-#include <functional>
+#include "MagicSpell.h"
 
 using namespace std;
 
 #define ACTION_IDLE 0
 #define ACTION_ATTACK 1
-
-
-struct _stats 
+#define ACTION_CAST_SPELL 2
+struct stats
 {
         string name;
         /**
@@ -27,18 +26,24 @@ struct _stats
         int level, exp, exp_to_level;
 };
 
-
 class Creature { /// Базовый класс существа
 public:
     Creature(string name, int hp, int mana, int armor, int damage, bool _is_NPC, string type, int time_attack);
-    struct _stats getStats();
+
+    struct stats getStats();
 
     /// Ассоциативный массив, в котором хранится время, необходимое на выполнение определенных действий
     map<int, int> timings;
 
+    /// Список всех заклинаний, доступных существу
+    vector<MagicSpell> spellBook;
+
     void attack();
-    void takeDamage_phys(int damage, Creature* attacker);
-    
+
+    void takeDamage_phys(int damage, Creature *attacker);
+
+    void takeDamage_magic(Creature *attacker, MagicSpell spell);
+
     void die();
     bool isAlive();
     
@@ -101,7 +106,7 @@ public:
      * Узнать, чем в данный момент занимается существо
      * @return Строка-ключ массива timings
      */
-    int actionGet();
+    int getAction();
 
     /**
      * Сколько шагов осталось до окончания текущего действия
@@ -117,7 +122,7 @@ public:
      * Начать выполнение действия
      * @param action
      */
-    void actionStart(int action);
+    void actionStart(int action, int action_duration);
 
     /**
      * Записать сообщение в лог существа
@@ -130,19 +135,42 @@ public:
      */
     vector<string> getLastLog(int count);
 
-    
+    /**
+     * Добавить заклинание в список доступных
+     * @param spell
+     */
+    void addSpell(MagicSpell spell);
+
+    /**
+     * Получить список заклинаний существа
+     */
+    vector<MagicSpell> getSpells();
+
+    /**
+     * Использовать магию
+     */
+    void useSpell(MagicSpell spell);
+
+    /**
+     * Получить сопротивление воздействию
+     * @param type Тип воздействия
+     * @return Значение сопротивления (коэффицент уменьшения урона)
+     */
+    int getResist(string type);
 
 private:
-
+    /**
+     * Сопротивления к различным типам воздействия
+     */
+    map<string, int> resists;
     int currentAction;
     int currentActionRemainingTime;
     bool is_in_battle;
-    _stats stats;
+    stats _stats;
     bool alive;
     virtual void lvlUp_upgradeStats();
     bool _is_NPC;
     Creature *target;
-    /// Указатель на текущую локацию существа
     Location *location;
     vector<string> log;
     int step;

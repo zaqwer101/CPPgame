@@ -2,22 +2,22 @@
 
 
 Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is_NPC, string type, int time_attack) {
-    this->stats.armor = armor;
-    this->stats.maxarmor = armor;
-    this->stats.name = name;
-    this->stats.hp = hp;
-    this->stats.maxhp = hp;
-    this->stats.mana = mana;
-    this->stats.maxmana = mana;
-    this->stats.damage = damage;
-    this->stats.maxdamage = damage;
-    this->stats.level = 1;
-    this->stats.exp = 0;
-    this->stats.exp_to_level = 100;
+    this->_stats.armor = armor;
+    this->_stats.maxarmor = armor;
+    this->_stats.name = name;
+    this->_stats.hp = hp;
+    this->_stats.maxhp = hp;
+    this->_stats.mana = mana;
+    this->_stats.maxmana = mana;
+    this->_stats.damage = damage;
+    this->_stats.maxdamage = damage;
+    this->_stats.level = 1;
+    this->_stats.exp = 0;
+    this->_stats.exp_to_level = 100;
 
     this->alive = true;
     this->_is_NPC = is_NPC;
-    this->stats.type = type;
+    this->_stats.type = type;
     is_in_battle = false;
     this->target = nullptr;
 
@@ -27,21 +27,40 @@ Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is
     this->step = 0;
 }
 
-struct _stats Creature::getStats() {
-    return this->stats;
+struct stats Creature::getStats() {
+    return this->_stats;
 }
 
 void Creature::takeDamage_phys(int damage, Creature* attacker) {
-    int tmp = this->stats.hp;
-    this->stats.hp = this->stats.hp - (damage - this->stats.armor);
-    LOG(stats.name + " taken " + to_string(tmp - stats.hp) + " physical damage from " + attacker->getStats().name);
-    if(target == nullptr)
-    {
-        selectTarget(attacker);
-    }
-    if (this->stats.hp <= 0) {
+    int tmp = this->getStats().hp;
+    this->_stats.hp = this->_stats.hp - (damage - this->_stats.armor);
+    LOG(_stats.name + " taken " + to_string(tmp - _stats.hp) + " physical damage from " + attacker->getStats().name);
+
+    if (this->_stats.hp <= 0) {
         this->die();
+    } else {
+        if (target == nullptr) {
+            selectTarget(attacker);
+        }
     }
+}
+
+void Creature::takeDamage_magic(Creature *attacker, MagicSpell spell) {
+    int tmp = this->getStats().hp;
+    this->_stats.hp -= static_cast<int>(
+            spell.getPower() - (spell.getPower() * getResist(spell.getType()))
+    );
+    LOG(_stats.name + " taken " + to_string(tmp - _stats.hp) + " " + spell.getType() + " damage from " +
+        attacker->getStats().name);
+
+    if (this->_stats.hp <= 0) {
+        this->die();
+    } else {
+        if (target == nullptr) {
+            selectTarget(attacker);
+        }
+    }
+
 }
 
 void Creature::attack() {
@@ -50,11 +69,11 @@ void Creature::attack() {
 
     if (getTarget()->isAlive()) {
         LOG(getStats().name + " attacked " + getTarget()->getStats().name);
-        getTarget()->takeDamage_phys(this->stats.damage, this);
+        getTarget()->takeDamage_phys(this->_stats.damage, this);
     }
 
     if (!getTarget()->isAlive()) {
-        this->takeExp(getTarget()->stats.maxhp);
+        this->takeExp(getTarget()->_stats.maxhp);
         this->is_in_battle = false; // Противник погиб, мы больше не сражаемся
         LOG("Enemy " + target->getStats().name + " died");
     }
@@ -62,12 +81,12 @@ void Creature::attack() {
 
 void Creature::takeExp(int exp) {
     int delta = exp;
-    LOG(stats.name + " got " + to_string(exp) + " experience");
+    LOG(_stats.name + " got " + to_string(exp) + " experience");
     while (delta >= 0) {
-        this->stats.exp += delta;
+        this->_stats.exp += delta;
 
-        if (this->stats.exp >= this->stats.exp_to_level) {
-            delta -= this->stats.exp_to_level;
+        if (this->_stats.exp >= this->_stats.exp_to_level) {
+            delta -= this->_stats.exp_to_level;
             lvlUp();
         } else
             break;
@@ -75,9 +94,9 @@ void Creature::takeExp(int exp) {
 }
 
 void Creature::die() {
-    this->stats.hp = 0;
+    this->_stats.hp = 0;
     this->alive = false;
-    LOG(stats.name + " died");
+    LOG(_stats.name + " died");
 }
 
 bool Creature::isAlive() {
@@ -85,31 +104,31 @@ bool Creature::isAlive() {
 }
 
 void Creature::lvlUp() {
-    this->stats.exp = 0;
-    this->stats.exp_to_level *= 2;
-    this->stats.level++;
+    this->_stats.exp = 0;
+    this->_stats.exp_to_level *= 2;
+    this->_stats.level++;
     this->lvlUp_upgradeStats();
-    LOG(stats.name + " reached level " + to_string(stats.level));
+    LOG(_stats.name + " reached level " + to_string(_stats.level));
 }
 
 void Creature::changeDamage(int value) {
-    this->stats.maxdamage += value;
-    this->stats.damage += value;
+    this->_stats.maxdamage += value;
+    this->_stats.damage += value;
 }
 
 void Creature::changeMaxHP(int value) {
-    this->stats.maxhp += value;
-    this->stats.hp += value;
+    this->_stats.maxhp += value;
+    this->_stats.hp += value;
 }
 
 void Creature::__debug_printStats() {
     cout <<
          "----------------" << endl <<
-         "Name: " << this->stats.name << endl <<
-         "HP: " << this->stats.hp << "/" << this->stats.maxhp << endl <<
-         "Damage: " << this->stats.damage << endl <<
-         "Level: " << this->stats.level << endl <<
-         "EXP: " << this->stats.exp << "/" << this->stats.exp_to_level << endl <<
+         "Name: " << this->_stats.name << endl <<
+         "HP: " << this->_stats.hp << "/" << this->_stats.maxhp << endl <<
+         "Damage: " << this->_stats.damage << endl <<
+         "Level: " << this->_stats.level << endl <<
+         "EXP: " << this->_stats.exp << "/" << this->_stats.exp_to_level << endl <<
          "----------------" << endl;
 }
 
@@ -132,21 +151,21 @@ bool Creature::isInBattle() {
 
 void Creature::selectTarget(Creature *target) {
     this->target = target;
-    LOG(stats.name + " choose target " + target->getStats().name);
+    LOG(_stats.name + " choose target " + target->getStats().name);
 }
 
 Creature *Creature::getTarget() {
     return this->target;
 }
 
-int Creature::actionGet() {
+int Creature::getAction() {
     return this->currentAction;
 }
 
-void Creature::actionStart(int action) {
-    if (actionGet() == 0) {
+void Creature::actionStart(int action, int action_duration) {
+    if (getAction() == 0) {
         this->currentAction = action;
-        this->currentActionRemainingTime = this->timings[ACTION_ATTACK];
+        this->currentActionRemainingTime = action_duration;
     }
 }
 
@@ -190,4 +209,34 @@ void Creature::lvlUp_upgradeStats() {
     this->changeMaxHP(static_cast<int>(getStats().maxhp / 5));
 }
 
+void Creature::addSpell(MagicSpell spell) {
+    bool notAlreadyInSpellBook = true;
 
+    for (MagicSpell a : spellBook) {
+        if (a.name == spell.name && a.getPower() == spell.getPower() && a.getType() == spell.getType()) {
+            notAlreadyInSpellBook = false;
+            break;
+        }
+    }
+
+    if (notAlreadyInSpellBook) {
+        spell.setCaster(this);
+        spellBook.push_back(spell);
+    }
+}
+
+vector<MagicSpell> Creature::getSpells() {
+    return spellBook;
+}
+
+void Creature::useSpell(MagicSpell spell) {
+
+    if (getStats().mana >= spell.getManacost()) {
+        this->_stats.mana -= spell.getManacost();
+        actionStart(ACTION_CAST_SPELL, spell.getCastTime());
+    }
+}
+
+int Creature::getResist(string type) {
+    return resists[type];
+}

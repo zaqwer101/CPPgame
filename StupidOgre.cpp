@@ -8,17 +8,17 @@ void StupidOgre::lvlUp_upgradeStats() {
 }
 
 void StupidOgre::AI() {
-    if (this->actionGet() == ACTION_IDLE) {
+    if (this->getAction() == ACTION_IDLE) {
         if (getTarget() == nullptr) {
             for (Creature *c : this->getLocation()->getMembers()) {
                 if (c->getStats().type == "Hero") {
                     this->selectTarget(c);
+                    actionStart(ACTION_ATTACK, this->timings[ACTION_ATTACK]);
                     break;
                 }
             }
         } else {
-            actionStart(ACTION_ATTACK);
+            actionStart(ACTION_ATTACK, this->timings[ACTION_ATTACK]);
         }
     }
 }
-
