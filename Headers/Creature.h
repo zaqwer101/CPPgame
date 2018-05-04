@@ -2,7 +2,7 @@
 #define CREATURE_H
 
 #include<iostream>
-#include "../Location.h"
+#include "Location.h"
 #include<map>
 #include "MagicSpell.h"
 

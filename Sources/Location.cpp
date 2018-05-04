@@ -1,4 +1,4 @@
-#include "Location.h"
+#include "../Headers/Location.h"
 
 Location::Location(int x, int y)
 {

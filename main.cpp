@@ -1,7 +1,7 @@
 #include<iostream>
 #include "Headers/Hero.h"
 #include "Headers/Creature.h"
-#include "Location.h"
+#include "Headers/Location.h"
 #include "Headers/StupidOgre.h"
 #include "Headers/Fireball.h"
 #include <ncurses.h>
