@@ -288,3 +288,24 @@ vector<string> Creature::getLog() {
     return this->log;
 }
 
+void Creature::heal(int value) {
+    this->_stats.hp += value;
+    if (this->_stats.hp > _stats.maxhp)
+        _stats.hp = _stats.maxhp;
+    LOG(_stats.name + " healed on " + to_string(value));
+}
+
+bool Creature::isIdle() {
+    return currentAction == ACTION_IDLE;
+}
+
+bool Creature::hasEnoughMana(MagicSpell *cast) {
+    return _stats.mana >= cast->getManacost();
+}
+
+void Creature::attack() {
+    if (isIdle() && this->getTarget()) {
+        actionStart(ACTION_ATTACK, this->timings[ACTION_ATTACK]);
+    }
+}
+

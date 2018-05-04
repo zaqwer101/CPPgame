@@ -4,6 +4,7 @@
 #include "Core/Location.h"
 #include "Creatures/StupidOgre.h"
 #include "Magic/Fireball.h"
+#include "Magic/BaseHeal.h"
 #include <ncurses.h>
 #include <string>
 
@@ -71,6 +72,7 @@ static void worldActionStep(vector<Location *> world) {
     endwin();
 }
 */
+
 int main() {
 
     vector<Location *> world;
@@ -84,11 +86,23 @@ int main() {
     enemy.changeLocation(&l1);
 
     platon.addSpell(new Fireball(10, 20));
+    platon.addSpell(new BaseHeal(30, 10));
 
     while (platon.isAlive()) {
         worldActionStep(world);
-        platon.castSpell(platon.spellBook[0]);
-        //cout << enemy.getLastLog(1)[0] << endl;
+
+        // *** HERO AI ***
+
+        if (platon.getTarget() && platon.isIdle()) {
+            if (platon.getStats().hp <= 50 && platon.hasEnoughMana(platon.getSpells()[1])) {
+                platon.castSpell(platon.getSpells()[1]); // хилимся
+            } else {
+                platon.attack();
+            }
+        }
+
+        // ***         ***
+
     }
     for (string msg : platon.getLog()) {
         cout << msg << endl;

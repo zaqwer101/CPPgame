@@ -167,6 +167,13 @@ public:
 
     void updateCooldowns();
 
+    void heal(int value);
+
+    bool isIdle();
+
+    bool hasEnoughMana(MagicSpell *cast);
+
+    void attack();
 private:
     /**
      * Сопротивления к различным типам воздействия
