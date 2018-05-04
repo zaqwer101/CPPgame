@@ -3,7 +3,7 @@
 
 
 #include "MagicSpell.h"
-#include "../Creatures/Creature.h"
+#include "Creature.h"
 
 class Fireball : public MagicSpell {
 public:

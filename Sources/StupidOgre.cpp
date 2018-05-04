@@ -1,4 +1,4 @@
-#include "../../Headers/Creatures/StupidOgre.h"
+#include "../Headers/StupidOgre.h"
 
 StupidOgre::StupidOgre(const string &name) : Creature_NPC(name, 100, 0, 2, 5, true, "Ogre", 2) {}
 

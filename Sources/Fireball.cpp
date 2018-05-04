@@ -2,7 +2,7 @@
 // Created by zaqwer on 03.05.18.
 //
 
-#include "../../Headers/Magic/Fireball.h"
+#include "../Headers/Fireball.h"
 
 Fireball::Fireball(int power, int manacost) : MagicSpell("fireball", "fire", 4, power, manacost, 2) {}
 

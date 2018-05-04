@@ -2,9 +2,9 @@
 #define CREATURE_H
 
 #include<iostream>
-#include "../../Location.h"
+#include "../Location.h"
 #include<map>
-#include "../Magic/MagicSpell.h"
+#include "MagicSpell.h"
 
 using namespace std;
 
