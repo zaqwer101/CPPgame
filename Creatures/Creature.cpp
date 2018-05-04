@@ -1,4 +1,4 @@
-#include "../Headers/Creature.h"
+#include "Creature.h"
 
 
 Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is_NPC, string type, int time_attack) {

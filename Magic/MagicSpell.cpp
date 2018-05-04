@@ -2,8 +2,8 @@
 // Created by zaqwer on 03.05.18.
 //
 
-#include "../Headers/MagicSpell.h"
-#include "../Headers/Creature.h"
+#include "MagicSpell.h"
+#include "../Creatures/Creature.h"
 
 MagicSpell::MagicSpell(string name, string type, int cooldown, int power, int manacost, int cast_time) {
     this->type = type;

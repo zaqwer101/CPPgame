@@ -1,4 +1,4 @@
-#include "../Headers/Hero.h"
+#include "Hero.h"
 
 Hero::Hero(string name) : Creature(name, 100, 100, 0, 8, false, "Hero", 3) {}
 
