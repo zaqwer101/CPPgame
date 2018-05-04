@@ -1,9 +1,9 @@
 #include<iostream>
-#include "Hero.h"
-#include "Creature.h"
+#include "Headers/Creatures/Hero.h"
+#include "Headers/Creatures/Creature.h"
 #include "Location.h"
-#include "StupidOgre.h"
-#include "Magic/Fireball.h"
+#include "Headers/Creatures/StupidOgre.h"
+#include "Headers/Magic/Fireball.h"
 #include <ncurses.h>
 #include <string>
 

@@ -2,28 +2,27 @@
 #define CREATURE_H
 
 #include<iostream>
-#include "Location.h"
+#include "../../Location.h"
 #include<map>
-#include "Magic/MagicSpell.h"
+#include "../Magic/MagicSpell.h"
 
 using namespace std;
 
 #define ACTION_IDLE 0
 #define ACTION_ATTACK 1
 #define ACTION_CAST_SPELL 2
-struct stats
-{
-        string name;
-        /**
-         * Тип существа (e.g. "Ogre"). 
-        */
-        string type;
-        int hp,maxhp;
-        int mana, maxmana;
-        int armor, maxarmor;
-        int damage, maxdamage;
-        
-        int level, exp, exp_to_level;
+struct stats {
+    string name;
+    /**
+     * Тип существа (e.g. "Ogre").
+    */
+    string type;
+    int hp, maxhp;
+    int mana, maxmana;
+    int armor, maxarmor;
+    int damage, maxdamage;
+
+    int level, exp, exp_to_level;
 };
 
 class Creature { /// Базовый класс существа
@@ -48,45 +47,46 @@ public:
     void takeDamage_magic(Creature *attacker, MagicSpell *spell);
 
     void die();
+
     bool isAlive();
-    
+
     /**
      * Получить очки опыта
      */
     void takeExp(int exp);
-    
+
     /**
      * Повысить уровень
      */
     void lvlUp();
-    
+
     /**
      * Изменить максимальный уровень урона существа
      */
     void changeDamage(int value);
-    
+
     /**
     * Изменить максимальный уровень здоровья существа.
     */
     void changeMaxHP(int value);
 
     void __debug_printStats();
-    
+
     /**
      * Является ли существо NPC
      */
     bool is_NPC();
-    
+
     /**
      * Получить текущую локацию существа
      */
-    Location* getLocation();
+    Location *getLocation();
 
     /**
      * Изменить локацию существа
      * @param location Указатель на целевую локацию
      */
-    void changeLocation(Location* location);
+    void changeLocation(Location *location);
 
     /**
      * Находится ли существо в сражении с данный момент
@@ -97,13 +97,13 @@ public:
      * Выбрать цель для атаки
      * @param target Указатель на существо противника
      */
-    void selectTarget(Creature* target);
+    void selectTarget(Creature *target);
 
     /**
      * Получить текущую цель существа
      * @return Указатель на существо противника
      */
-    Creature* getTarget();
+    Creature *getTarget();
 
     /**
      * Узнать, чем в данный момент занимается существо
@@ -177,7 +177,9 @@ private:
     bool is_in_battle;
     stats _stats;
     bool alive;
+
     virtual void lvlUp_upgradeStats();
+
     bool _is_NPC;
     Creature *target;
     Location *location;
