@@ -13,7 +13,7 @@ MagicSpell::MagicSpell(string name, string type, int cooldown, int power, int ma
     this->caster = caster;
     this->name = name;
     this->cast_time = cast_time;
-    this->remaining_time = 0;
+    caster->cooldowns[name] = 0;
 }
 
 int MagicSpell::getPower() {

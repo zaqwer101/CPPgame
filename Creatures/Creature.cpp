@@ -67,8 +67,8 @@ void Creature::takeDamage_magic(Creature *attacker, MagicSpell *spell) {
 void Creature::attack_magic() {
     this->is_in_battle = true;
     if (getTarget()->isAlive()) {
-        getTarget()->takeDamage_magic(this, currentSpell);
-        LOG(_stats.name + " casted " + currentSpell->name + " on " + getTarget()->_stats.name);
+        getTarget()->takeDamage_magic(this, getSpell(currentSpell));
+        LOG(_stats.name + " casted " + getSpell(currentSpell)->name + " on " + getTarget()->_stats.name);
     }
 
     if (!getTarget()->isAlive()) {
@@ -197,7 +197,7 @@ void Creature::actionStep() {
                 attack_phys();
                 break;
             case ACTION_CAST_SPELL:
-                currentSpell->use();
+                getSpell(currentSpell)->use();
                 currentSpell = nullptr;
                 break;
         }
@@ -235,7 +235,7 @@ void Creature::addSpell(MagicSpell *spell) {
     bool notAlreadyInSpellBook = true;
 
     for (MagicSpell *a : spellBook) {
-        if (a->name == spell->name && a->getPower() == spell->getPower() && a->getType() == spell->getType()) {
+        if (a->name == spell->name) {
             notAlreadyInSpellBook = false;
             break;
         }
@@ -253,12 +253,12 @@ vector<MagicSpell *> Creature::getSpells() {
 
 void Creature::castSpell(MagicSpell *spell) {
 
-    if (spell->remaining_time == 0) {
+    if (cooldowns[spell->name] == 0) {
         if (getStats().mana >= spell->getManacost()) {
             this->_stats.mana -= spell->getManacost();
-            this->currentSpell = spell;
+            this->currentSpell = spell->name;
             actionStart(ACTION_CAST_SPELL, spell->getCastTime());
-            this->currentSpell->remaining_time = this->currentSpell->cooldown;
+            cooldowns[spell->name] = this->getSpell(currentSpell)->cooldown;
             LOG("Preparing to cast " + spell->name);
         } else
             LOG("Not enough mana");
@@ -271,15 +271,10 @@ int Creature::getResist(string type) {
 }
 
 MagicSpell *Creature::getCurrentSpell() {
-    return this->currentSpell;
+    return this->getSpell(currentSpell);
 }
 
 void Creature::updateCooldowns() {
-
-    for (MagicSpell *spell : spellBook) {
-        if (spell->remaining_time > 0 && currentSpell != spell)
-            spell->remaining_time--;
-    }
 
 }
 
@@ -306,5 +301,13 @@ void Creature::attack() {
     if (isIdle() && this->getTarget()) {
         actionStart(ACTION_ATTACK, this->timings[ACTION_ATTACK]);
     }
+}
+
+MagicSpell *Creature::getSpell(string name) {
+    for (MagicSpell *spell : spellBook) {
+        if (spell->name == name)
+            return spell;
+    }
+    return nullptr;
 }
 

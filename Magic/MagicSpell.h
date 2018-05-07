@@ -19,8 +19,6 @@ public:
     string name;
     int cooldown;
 
-    /// Время, оставшееся до истечения кулдауна и появления возможности использовать заклинание
-    int remaining_time;
 
     int getPower();
 

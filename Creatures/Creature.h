@@ -34,6 +34,9 @@ public:
     /// Ассоциативный массив, в котором хранится время, необходимое на выполнение определенных действий
     map<int, int> timings;
 
+    /// Кулдауны предметов и заклинаний
+    map<string, int> cooldowns;
+
 
     /// Список всех заклинаний, доступных существу
     vector<MagicSpell *> spellBook;
@@ -152,6 +155,11 @@ public:
     vector<MagicSpell *> getSpells();
 
     /**
+     * Получить заклинание по его имени
+     */
+    MagicSpell *getSpell(string name);
+
+    /**
      * Использовать магию
      */
     void castSpell(MagicSpell *spell);
@@ -192,7 +200,7 @@ private:
     Location *location;
     vector<string> log;
     int step;
-    MagicSpell *currentSpell;
+    string currentSpell;
 };
 
 #endif 
