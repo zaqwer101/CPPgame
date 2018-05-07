@@ -85,8 +85,8 @@ int main() {
     platon.changeLocation(&l1);
     enemy.changeLocation(&l1);
 
-    platon.addSpell(new Fireball(10, 20));
-    platon.addSpell(new BaseHeal(30, 10));
+    platon.addSpell(new Fireball(&platon, 10, 20));
+    platon.addSpell(new BaseHeal(&platon, 30, 10));
 
     while (platon.isAlive() && enemy.isAlive()) {
         worldActionStep(world);

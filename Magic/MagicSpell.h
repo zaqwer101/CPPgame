@@ -9,7 +9,7 @@ using namespace std;
 
 class MagicSpell {
 public:
-    MagicSpell(string name, string type, int cooldown, int power, int manacost, int cast_time);
+    MagicSpell(Creature *caster, string name, string type, int cooldown, int power, int manacost, int cast_time);
 
     /**
      * Использовать заклинание от имени кастера

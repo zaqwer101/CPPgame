@@ -5,7 +5,8 @@
 #include "MagicSpell.h"
 #include "../Creatures/Creature.h"
 
-MagicSpell::MagicSpell(string name, string type, int cooldown, int power, int manacost, int cast_time) {
+MagicSpell::MagicSpell(Creature *caster, string name, string type, int cooldown, int power, int manacost,
+                       int cast_time) {
     this->type = type;
     this->cooldown = cooldown;
     this->power = power;
@@ -13,7 +14,7 @@ MagicSpell::MagicSpell(string name, string type, int cooldown, int power, int ma
     this->caster = caster;
     this->name = name;
     this->cast_time = cast_time;
-    caster->cooldowns[name] = 0;
+    this->caster->setCooldown(name, 0);
 }
 
 int MagicSpell::getPower() {

@@ -198,7 +198,7 @@ void Creature::actionStep() {
                 break;
             case ACTION_CAST_SPELL:
                 getSpell(currentSpell)->use();
-                currentSpell = nullptr;
+                currentSpell = "";
                 break;
         }
         currentAction = ACTION_IDLE;
@@ -253,12 +253,16 @@ vector<MagicSpell *> Creature::getSpells() {
 
 void Creature::castSpell(MagicSpell *spell) {
 
-    if (cooldowns[spell->name] == 0) {
+    if (currentSpell != "") {
+        return;
+    }
+
+    if (getCooldown(spell->name) == 0) {
         if (getStats().mana >= spell->getManacost()) {
             this->_stats.mana -= spell->getManacost();
             this->currentSpell = spell->name;
             actionStart(ACTION_CAST_SPELL, spell->getCastTime());
-            cooldowns[spell->name] = this->getSpell(currentSpell)->cooldown;
+            setCooldown(spell->name, this->getSpell(currentSpell)->cooldown);
             LOG("Preparing to cast " + spell->name);
         } else
             LOG("Not enough mana");
@@ -309,5 +313,19 @@ MagicSpell *Creature::getSpell(string name) {
             return spell;
     }
     return nullptr;
+}
+
+int Creature::getCooldown(string name) {
+    for (cooldown c : cooldowns) {
+        if (c.name == name) {
+            return c.value;
+        }
+    }
+    return NULL;
+}
+
+void Creature::setCooldown(string name, int value) {
+    cooldown c = {name, value};
+    cooldowns.push_back(c);
 }
 

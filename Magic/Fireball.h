@@ -7,10 +7,7 @@
 
 class Fireball : public MagicSpell {
 public:
-    Fireball(int power, int manacost);
-
-    Fireball(const string &name, const string &type, int cooldown, int power, int manacost, int cast_time);
-
+    Fireball(Creature *caster, int power, int manacost);
     void use() override;
 };
 

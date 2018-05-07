@@ -6,7 +6,7 @@
 
 class BaseHeal : public MagicSpell {
 public:
-    BaseHeal(int power, int manacost);
+    BaseHeal(Creature *caster, int power, int manacost);
 
     void use() override;
 

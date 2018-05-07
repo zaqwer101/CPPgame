@@ -24,9 +24,14 @@ struct stats {
 
     int level, exp, exp_to_level;
 };
+struct cooldown {
+    string name;
+    int value;
+};
 
 class Creature { /// Базовый класс существа
 public:
+
     Creature(string name, int hp, int mana, int armor, int damage, bool _is_NPC, string type, int time_attack);
 
     struct stats getStats();
@@ -35,8 +40,11 @@ public:
     map<int, int> timings;
 
     /// Кулдауны предметов и заклинаний
-    map<string, int> cooldowns;
+    vector<cooldown> cooldowns;
 
+    int getCooldown(string name);
+
+    void setCooldown(string name, int value);
 
     /// Список всех заклинаний, доступных существу
     vector<MagicSpell *> spellBook;
