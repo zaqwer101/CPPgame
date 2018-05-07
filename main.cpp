@@ -88,7 +88,7 @@ int main() {
     platon.addSpell(new Fireball(10, 20));
     platon.addSpell(new BaseHeal(30, 10));
 
-    while (platon.isAlive()) {
+    while (platon.isAlive() && enemy.isAlive()) {
         worldActionStep(world);
 
         // *** HERO AI ***

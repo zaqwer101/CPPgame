@@ -13,12 +13,12 @@ void StupidOgre::AI() {
             for (Creature *c : this->getLocation()->getMembers()) {
                 if (c->getStats().type == "Hero") {
                     this->selectTarget(c);
-                    actionStart(ACTION_ATTACK, this->timings[ACTION_ATTACK]);
+                    attack();
                     break;
                 }
             }
         } else {
-            actionStart(ACTION_ATTACK, this->timings[ACTION_ATTACK]);
+            attack();
         }
     }
 }

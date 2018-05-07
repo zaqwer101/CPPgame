@@ -178,7 +178,7 @@ int Creature::getAction() {
 }
 
 void Creature::actionStart(int action, int action_duration) {
-    if (getAction() == 0) {
+    if (getAction() == 0 && isAlive()) {
         this->currentAction = action;
         this->currentActionRemainingTime = action_duration;
     }
@@ -225,7 +225,6 @@ vector<string> Creature::getLastLog(int count) {
         return tmp;
     }
 }
-
 
 void Creature::lvlUp_upgradeStats() {
     this->changeDamage(static_cast<int>(getStats().damage / 5));
