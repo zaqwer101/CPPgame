@@ -14,6 +14,8 @@ Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is
     this->_stats.level = 1;
     this->_stats.exp = 0;
     this->_stats.exp_to_level = 100;
+    this->_stats.maxspeed = this->_stats.speed = 2;
+    this->_stats.attack_range = 0; // Все существа по умолчанию могут атаковать лишь в упор
 
     this->alive = true;
     this->_is_NPC = is_NPC;

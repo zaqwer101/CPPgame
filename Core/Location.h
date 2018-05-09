@@ -17,7 +17,7 @@ public:
      * Получить координаты локации
      * @return Вектор, где 0 - x, 1 - y
      */
-    vector<int> getPosition();
+    vector<int> getLocationPosition();
 
     /**
      * Добавить существо в локацию
@@ -33,6 +33,9 @@ public:
 
 private:
     int x, y; /// Координаты локации
+    struct position{
+        int x, y;
+    };
     vector<Creature*> members;
 };
 

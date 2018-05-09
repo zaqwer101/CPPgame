@@ -18,7 +18,7 @@ using namespace std;
     string str_exp = "Level: " + to_string(hero->getStats().level) + " (" + to_string(hero->getStats().exp) + "/" +
                      to_string(hero->getStats().exp_to_level) + ")";
     string str_location = "Location: " + to_string(hero->getLocation()->getPosition()[0]) + "/" +
-                          to_string(hero->getLocation()->getPosition()[1]);
+                          to_string(hero->getLocation()->getLocationPosition()[1]);
     string str_hero =
             hero->getStats().name + " (" + to_string(hero->getStats().hp) + "/" + to_string(hero->getStats().maxhp) +
             ")";
@@ -104,7 +104,7 @@ int main() {
         // ***         ***
 
     }
-    for (string msg : platon.getLog()) {
+    for (string msg : enemy.getLog()) {
         cout << msg << endl;
     }
     return 0;

@@ -6,7 +6,7 @@ Location::Location(int x, int y)
     this->y = y;
 }
 
-vector<int> Location::getPosition()
+vector<int> Location::getLocationPosition()
 {
    vector<int> position; 
    position.push_back(this->x);

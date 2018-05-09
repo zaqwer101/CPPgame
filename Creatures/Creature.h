@@ -1,3 +1,10 @@
+/*
+ * TODO: Реализовать дальность атаки
+ * Если существо атакует, то сражение начинается с максмальной дальности его оружия.
+ * TODO: Добавить существу дополнительный параметр - скорость - количество ОД, необходимых существу на сокращение расстояния между собой и противником.
+ *
+ */
+
 #ifndef CREATURE_H
 #define CREATURE_H
 
@@ -11,6 +18,7 @@ using namespace std;
 #define ACTION_IDLE 0
 #define ACTION_ATTACK 1
 #define ACTION_CAST_SPELL 2
+#define ACTION_DISANCE_REDUCION 3
 struct stats {
     string name;
     /**
@@ -21,6 +29,8 @@ struct stats {
     int mana, maxmana;
     int armor, maxarmor;
     int damage, maxdamage;
+    int speed, maxspeed;
+    int attack_range;
 
     int level, exp, exp_to_level;
 };
@@ -112,7 +122,8 @@ public:
 
     /**
      * Получить текущую цель существа
-     * @return Указатель на существо противника
+     * @return Указатель на существо противника    this->_is_NPC = is_NPC;
+
      */
     Creature *getTarget();
 
@@ -190,6 +201,16 @@ public:
     bool hasEnoughMana(MagicSpell *cast);
 
     void attack();
+
+    /// Получить дальность атаки существа
+    int getAttackRange();
+
+    /// Получить расстояние до существа
+    int getDistanceTo(Creature *target);
+
+    /// Сократить расстояния до цели
+    void reduceDistance();
+
 private:
     /**
      * Сопротивления к различным типам воздействия
@@ -209,6 +230,7 @@ private:
     vector<string> log;
     int step;
     string currentSpell;
+    int distance_to_target;
 };
 
 #endif 
