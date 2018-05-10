@@ -259,7 +259,7 @@ void Creature::castSpell(MagicSpell *spell) {
         return;
     }
 
-    if (getCooldown(spell->name) == 0) {
+    if (getCooldown(spell->name) == -1) {
         if (getStats().mana >= spell->getManacost()) {
             this->_stats.mana -= spell->getManacost();
             this->currentSpell = spell->name;
@@ -281,7 +281,11 @@ MagicSpell *Creature::getCurrentSpell() {
 }
 
 void Creature::updateCooldowns() {
-
+    for(MagicSpell* spell : spellBook)
+    {
+        if(cooldowns[spell->name] != -1 && spell->name != currentSpell)
+            cooldowns[spell->name] --;
+    }
 }
 
 vector<string> Creature::getLog() {
@@ -318,16 +322,10 @@ MagicSpell *Creature::getSpell(string name) {
 }
 
 int Creature::getCooldown(string name) {
-    for (cooldown c : cooldowns) {
-        if (c.name == name) {
-            return c.value;
-        }
-    }
-    return NULL;
+    return cooldowns[name];
 }
 
 void Creature::setCooldown(string name, int value) {
-    cooldown c = {name, value};
-    cooldowns.push_back(c);
+    cooldowns[name] = value;
 }
 

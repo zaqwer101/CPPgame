@@ -34,10 +34,6 @@ struct stats {
 
     int level, exp, exp_to_level;
 };
-struct cooldown {
-    string name;
-    int value;
-};
 
 class Creature { /// Базовый класс существа
 public:
@@ -50,7 +46,7 @@ public:
     map<int, int> timings;
 
     /// Кулдауны предметов и заклинаний
-    vector<cooldown> cooldowns;
+    map<string, int> cooldowns;
 
     int getCooldown(string name);
 
