@@ -8,11 +8,18 @@ class Creature;
 
 using namespace std;
 
+struct LocationPoint
+{
+    int x, y;
+    Creature *member;
+    bool isPassable;
+};
+
 class Location {
 
 public:
-    Location(int x, int y);
-    
+    Location(int x, int y, int size_x, int size_y);
+    int size_x, size_y;
     /**
      * Получить координаты локации
      * @return Вектор, где 0 - x, 1 - y
@@ -33,9 +40,7 @@ public:
 
 private:
     int x, y; /// Координаты локации
-    struct position{
-        int x, y;
-    };
+    vector<LocationPoint *> location;
     vector<Creature*> members;
 };
 

@@ -24,37 +24,6 @@ static void worldActionStep(vector<Location *> world) {
 
 int main() {
 
-    vector<Location *> world;
-    Location l1 = Location(1, 1);
-    world.push_back(&l1);
 
-    Hero platon = Hero("Platon");
-    StupidOgre enemy = StupidOgre("Angry ogre");
-
-    platon.changeLocation(&l1);
-    enemy.changeLocation(&l1);
-
-    platon.addSpell(new Fireball(&platon, 10, 20));
-    platon.addSpell(new BaseHeal(&platon, 30, 10));
-
-    while (platon.isAlive() && enemy.isAlive()) {
-        worldActionStep(world);
-
-        // *** HERO AI ***
-
-        if (platon.getTarget() && platon.isIdle()) {
-            if (platon.getStats().hp <= 50 && platon.hasEnoughMana(platon.getSpells()[1])) {
-                platon.castSpell(platon.getSpells()[1]); // хилимся
-            } else {
-                platon.castSpell(platon.getSpells()[0]);
-            }
-        }
-
-        // ***         ***
-
-    }
-    for (string msg : platon.getLog()) {
-        cout << msg << endl;
-    }
     return 0;
 }
