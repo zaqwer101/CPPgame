@@ -1,6 +1,6 @@
 #include "StupidOgre.h"
 
-StupidOgre::StupidOgre(const string &name) : Creature_NPC(name, 100, 0, 2, 5, true, "Ogre", 2) {}
+StupidOgre::StupidOgre(const string &name, LocationPoint *locationPoint) : Creature_NPC(name, 100, 0, 2, 5, true, "Ogre", 2, locationPoint) {}
 
 void StupidOgre::lvlUp_upgradeStats() {
     this->changeDamage(2);

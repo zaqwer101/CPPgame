@@ -38,7 +38,7 @@ struct stats {
 class Creature { /// Базовый класс существа
 public:
 
-    Creature(string name, int hp, int mana, int armor, int damage, bool _is_NPC, string type, int time_attack);
+    Creature(string name, int hp, int mana, int armor, int damage, bool _is_NPC, string type, int time_attack, LocationPoint *locationPoint);
 
     struct stats getStats();
 
@@ -100,10 +100,15 @@ public:
     Location *getLocation();
 
     /**
+     * Получить точку локации, в которой находится существо
+     */
+     LocationPoint *getLocationPoint();
+
+    /**
      * Изменить локацию существа
      * @param location Указатель на целевую локацию
      */
-    void changeLocation(Location *location);
+    void changeLocation(Location *location, LocationPoint *locationPoint);
 
     /**
      * Находится ли существо в сражении с данный момент
@@ -207,6 +212,7 @@ public:
     /// Сократить расстояния до цели
     void reduceDistance();
 
+    void pushLog();
 private:
     /**
      * Сопротивления к различным типам воздействия
@@ -227,6 +233,8 @@ private:
     int step;
     string currentSpell;
     int distance_to_target;
+    LocationPoint *location_point;
+    string logQueue;
 };
 
 #endif 

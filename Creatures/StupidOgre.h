@@ -6,7 +6,7 @@
 
 class StupidOgre : public Creature_NPC { /// Тестовый NPC-противник с примитивным ИИ
 public:
-    StupidOgre(const string &name);
+    StupidOgre(const string &name, LocationPoint *locationPoint);
 
     void lvlUp_upgradeStats() override;
 

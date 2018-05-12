@@ -7,7 +7,7 @@
 class Hero : public Creature { /// Класс героя, единственного в мире наследника данного класса
 public:
     
-    Hero(string name);
+    Hero(string name, LocationPoint *locationPoint);
     void lvlUp_upgradeStats() override;
 
 };

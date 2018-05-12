@@ -1,7 +1,12 @@
 #include "Creature.h"
 
 
-Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is_NPC, string type, int time_attack) {
+Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is_NPC, string type, int time_attack, LocationPoint *locationPoint) {
+    this->location = locationPoint->location;
+    this->location_point = locationPoint;
+
+    this->location->addMember(this, locationPoint);
+
     this->_stats.armor = armor;
     this->_stats.maxarmor = armor;
     this->_stats.name = name;
@@ -29,6 +34,9 @@ Creature::Creature(string name, int hp, int mana, int armor, int damage, bool is
     this->step = 0;
 
     this->resists["fire"] = 0;
+
+
+    logQueue = "";
 }
 
 struct stats Creature::getStats() {
@@ -153,12 +161,17 @@ bool Creature::is_NPC() {
     return _is_NPC;
 }
 
-void Creature::changeLocation(Location *location) {
-    this->location = location;
-    this->location->addMember(this);
+void Creature::changeLocation(Location *location, LocationPoint *locationPoint) {
+    if(locationPoint->member == nullptr) {
+        this->location = location;
+        this->location_point = locationPoint;
+        this->location->addMember(this, locationPoint);
+        LOG(_stats.name + " arrived in position " + to_string(locationPoint->x) + "/" + to_string(locationPoint->y) + " of location " + to_string(getLocation()->getLocationPosition()[0]) + "/" + to_string(getLocation()->getLocationPosition()[1]));
+    } else
+        LOG("This location point is not empty");
 }
 
-Location *Creature::getLocation() {
+Location* Creature::getLocation() {
     return this->location;
 }
 
@@ -190,8 +203,14 @@ int Creature::actionGetTime() {
     return this->currentActionRemainingTime;
 }
 
+void Creature::pushLog()
+{
+    log.push_back(logQueue);
+}
+
 void Creature::actionStep() {
     step++;
+    pushLog();
     LOG("Step: " + to_string(step));
     if (currentActionRemainingTime <= 0) {
         switch (currentAction) {
@@ -213,7 +232,7 @@ void Creature::actionStep() {
 }
 
 void Creature::LOG(string message) {
-    log.push_back(message);
+    logQueue += message + "; ";
 }
 
 vector<string> Creature::getLastLog(int count) {
@@ -327,5 +346,9 @@ int Creature::getCooldown(string name) {
 
 void Creature::setCooldown(string name, int value) {
     cooldowns[name] = value;
+}
+
+LocationPoint *Creature::getLocationPoint() {
+    return location_point;
 }
 

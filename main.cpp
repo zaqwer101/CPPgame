@@ -24,6 +24,15 @@ static void worldActionStep(vector<Location *> world) {
 
 int main() {
 
+    Location l1 = Location(0,0,10,10);
+    Location *location_pointer = &l1;
+    Hero hero = Hero("Platon", location_pointer->getLocation()[0]);
+    hero.changeLocation(location_pointer, location_pointer->getLocation()[1]);
+
+    for(auto message : hero.getLog())
+    {
+        cout << message << endl;
+    }
 
     return 0;
 }

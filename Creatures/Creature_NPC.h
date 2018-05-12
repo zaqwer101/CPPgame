@@ -6,7 +6,7 @@ using namespace std;
 
 class Creature_NPC : public Creature { /// Абстрактный класс, от которого будут наследоваться все NPC-существа в мире
 public:
-    Creature_NPC(string name, int hp, int mana, int armor, int damage, bool aggressive, string type, int time_attack);
+    Creature_NPC(string name, int hp, int mana, int armor, int damage, bool aggressive, string type, int time_attack, LocationPoint *locationPoint);
     
     /**
      * Будет ли NPC нападать на всех героев (Hero), которых встречает
